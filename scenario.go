@@ -45,6 +45,9 @@ func (ctx *S) When(fn interface{}) *S {
 func (ctx *S) Then(fn interface{}) *S {
 	return ctx.addStep("Then", fn)
 }
+func (ctx *S) And(fn interface{}) *S {
+	return ctx.addStep("And", fn)
+}
 
 func getFuncName(fn reflect.Value) string {
 	parts := strings.Split(runtime.FuncForPC(fn.Pointer()).Name(), `.`)
