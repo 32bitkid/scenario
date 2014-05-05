@@ -65,10 +65,12 @@ func (ctx *S) Go() {
 
 		for i := 0; i < numIn; i++ {
 			argType := fnType.In(i)
-			if argType == scenarioType  {
+			if argType == scenarioType {
 				args[i] = reflect.ValueOf(ctx)
 			} else if value, found := ctx.withs[argType]; found == true {
 				args[i] = *value
+			} else {
+				ctx.Fatalf("\"%s %s\" tried to resolve an unknown type of \"%s\".", step.string, getFuncName(v), argType)
 			}
 		}
 		ctx.Log(step.string, getFuncName(v))
