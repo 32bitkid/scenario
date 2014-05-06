@@ -6,13 +6,8 @@ import "github.com/32bitkid/scenario"
 func callbackShouldExecute(s *scenario.S, method func(interface{}) *scenario.S) {
 	executed := false
 	fn := func() { executed = true }
+
 	method(fn)
-
-	if executed {
-		s.Fatal("Callback was executed too soon!")
-	}
-
-	s.Go()
 
 	if !executed {
 		s.Fatal("Callback was not executed")
@@ -50,7 +45,6 @@ func TestStepsCanGetTheCurrentScenario(t *testing.T) {
 	}
 
 	currentScenario.Given(fn)
-	currentScenario.Go()
 }
 
 func TestStepsCanGetOtherDependencies(t *testing.T) {
@@ -84,15 +78,14 @@ func TestExecutionOrder(t *testing.T) {
 	s.And(inject("AndWhen"))
 	s.Then(inject("Then"))
 	s.And(inject("AndThen"))
-	s.Go()
 
-  if len(expected) != len(actual) {
-    t.Fatal("Expected %d invocations, but got %d instead", len(expected), len(actual))
-  }
-  
+	if len(expected) != len(actual) {
+		t.Fatal("Expected %d invocations, but got %d instead", len(expected), len(actual))
+	}
+
 	for i, expectedValue := range expected {
-	  if actual[i] != expectedValue {
-	    t.Fatal("Expected \"%s\", but got \"%s\" instead", expectedValue, actual[i])
-	  }
+		if actual[i] != expectedValue {
+			t.Fatal("Expected \"%s\", but got \"%s\" instead", expectedValue, actual[i])
+		}
 	}
 }
