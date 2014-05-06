@@ -89,3 +89,14 @@ func TestExecutionOrder(t *testing.T) {
 		}
 	}
 }
+
+func TestReturnValueOfStepsShouldGetPutInResolver(t *testing.T) {
+	foo := &struct{ string }{"foo"}
+	s := scenario.Start(t)
+	s.Given(func() *struct{ string } { return foo })
+	s.Then(func(injectedfoo *struct{ string }) {
+		if injectedfoo != foo {
+			t.Fatal()
+		}
+	})
+}

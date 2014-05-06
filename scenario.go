@@ -78,9 +78,13 @@ func (ctx *S) exec(name string, v reflect.Value) {
 		}
 	}
 	ctx.Log(name, getFuncName(v))
-	v.Call(args)
+	returnVal := v.Call(args)
 
-
+	// Inject return values into resolver
+	for i := 0; i < fnType.NumOut(); i++ {
+		v := returnVal[i]
+		ctx.container[v.Type()] = &v
+	}
 }
 
 func (ctx *S) With(with interface{}) *S {
