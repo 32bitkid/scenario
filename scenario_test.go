@@ -80,12 +80,12 @@ func TestExecutionOrder(t *testing.T) {
 	s.And(inject("AndThen"))
 
 	if len(expected) != len(actual) {
-		t.Fatal("Expected %d invocations, but got %d instead", len(expected), len(actual))
+		t.Fatalf("Expected %d invocations, but got %d instead", len(expected), len(actual))
 	}
 
 	for i, expectedValue := range expected {
 		if actual[i] != expectedValue {
-			t.Fatal("Expected \"%s\", but got \"%s\" instead", expectedValue, actual[i])
+			t.Fatalf("Expected \"%s\", but got \"%s\" instead", expectedValue, actual[i])
 		}
 	}
 }
