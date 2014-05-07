@@ -100,3 +100,21 @@ func TestReturnValueOfStepsShouldGetPutInResolver(t *testing.T) {
 		}
 	})
 }
+
+  type foo interface { bar() }
+  type baz struct {}
+  func (b baz) bar() {
+  }
+
+
+func TestCompatableTypesFromResolver(t *testing.T) {
+
+  b := &baz{}
+  s := scenario.Start(t)
+  s.Given(func() *baz { return b })
+  s.Then(func(f foo) {
+    if(f != b) {
+      t.Fatal("Asked for a foo, but didn't get baz")
+    }
+  })
+}
