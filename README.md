@@ -81,7 +81,7 @@ One can also return values from step handlers, those values will automatically g
 context container. Example:
 
 ```go
-func I_enter_my_credentials(s *scenario.S) (creds) {
+func a_user_is_logged_in(s *scenario.S) (creds) {
   var username := randomString(10)
   var password := randomString(10)
   if error := api.createUser(username, password); error != nil {
