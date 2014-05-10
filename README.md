@@ -14,7 +14,6 @@ func TestSomeFeature(t *testing.T) {
 	s.Given(I_am_logged_in)
 	s.When(I_place_an_order)
 	s.Then(I_get_a_confirmation_email)
-	s.Go()
 }
 ```
 
@@ -22,7 +21,7 @@ Or chainable:
 
 ```go
 func TestSomeFeature(t *testing.T) {
-	scenario.Start(t).Given(I_am_logged_in).When(I_place_an_order).Then(I_get_a_confirmation_email).Go()
+	scenario.Start(t).Given(I_am_logged_in).When(I_place_an_order).Then(I_get_a_confirmation_email)
 }
 ```
 
@@ -64,7 +63,6 @@ func TestState(t *testing.T) {
   s.With(creds{"admin","password"})
   s.When(I_enter_my_credentials)
   s.Then(I_get_access)
-  s.Go()
 }
 ```
 
@@ -73,5 +71,22 @@ Once registered, then a step definition can ask for it by declaring it as an arg
 ```go
 func I_enter_my_credentials(c creds) {
   login(c.username, c.password)
+}
+```
+
+Using return values to hold onto state
+--------------------------------------
+
+One can also return values from step handlers, those values will automatically get injected into the
+context container. Example:
+
+```go
+func I_enter_my_credentials(s *scenario.S) (creds) {
+  var username := randomString(10)
+  var password := randomString(10)
+  if error := api.createUser(username, password); error != nil {
+    s.Fatal("Could not create user")
+  }
+  return creds{username, password}
 }
 ```
